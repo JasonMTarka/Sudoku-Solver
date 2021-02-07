@@ -25,15 +25,9 @@ class Inner_Grid(tk.Frame):
 		self.cells = {}
 		for name in NAMES:
 			self.cells[name] = tk.Entry(self, width=4, borderwidth=2,font=8)
-		self.cells[NAMES[0]].grid(row=0, column=0)
-		self.cells[NAMES[1]].grid(row=0, column=1)
-		self.cells[NAMES[2]].grid(row=0, column=2)
-		self.cells[NAMES[3]].grid(row=1, column=0)
-		self.cells[NAMES[4]].grid(row=1, column=1)
-		self.cells[NAMES[5]].grid(row=1, column=2)
-		self.cells[NAMES[6]].grid(row=2, column=0)
-		self.cells[NAMES[7]].grid(row=2, column=1)
-		self.cells[NAMES[8]].grid(row=2, column=2)
+			for inner_name in NAMES:
+				row_val, col_val = LOCATIONS[name][inner_name]
+				self.cells[name].grid(row=row_val, column=col_val)
 
 # Allows button to change color when hovered over
 class HoverButton(tk.Button):
