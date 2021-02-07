@@ -1,17 +1,8 @@
 import tkinter as tk
 from sudoku_constants import NAMES, LOCATIONS, SUDOKUS
 
-grid = [
-		[1,0,0,9,0,4,0,8,2],
-		[0,5,2,6,8,0,3,0,0],
-		[8,6,4,2,0,0,9,1,0],
-		[0,1,0,0,4,9,8,0,6],
-		[4,9,8,3,0,0,7,0,1],
-		[6,0,7,0,1,0,0,9,3],
-		[0,8,6,0,3,5,2,0,9],
-		[5,0,9,0,0,2,1,3,0],
-		[0,3,0,4,9,7,0,0,8]
-		]
+# Loads grid "Easy #1" from the sudoku_constants file
+grid = SUDOKUS["Easy #1"]
 
 # Inner grid refers to a 9-cell grid
 class Inner_Grid(tk.Frame):
