@@ -56,18 +56,12 @@ def main():
 def setup():
 	global outer_grids
 	outer_grids = {}
-	for name in NAMES:
-		outer_grids[name] = Inner_Grid(root)
+	grid_locs = list(LOCATIONS["topleft"].values())
 
-	outer_grids[NAMES[0]].grid(row=0, column=0, padx=5, pady=5)
-	outer_grids[NAMES[1]].grid(row=0, column=1, padx=5, pady=5)
-	outer_grids[NAMES[2]].grid(row=0, column=2, padx=5, pady=5)
-	outer_grids[NAMES[3]].grid(row=1, column=0, padx=5, pady=5)
-	outer_grids[NAMES[4]].grid(row=1, column=1, padx=5, pady=5)
-	outer_grids[NAMES[5]].grid(row=1, column=2, padx=5, pady=5)
-	outer_grids[NAMES[6]].grid(row=2, column=0, padx=5, pady=5)
-	outer_grids[NAMES[7]].grid(row=2, column=1, padx=5, pady=5)
-	outer_grids[NAMES[8]].grid(row=2, column=2, padx=5, pady=5)
+	for i, name in enumerate(NAMES):
+		outer_grids[name] = Inner_Grid(root)
+		row_val, col_val = grid_locs[i]
+		outer_grids[name].grid(row=row_val, column=col_val, padx=5, pady=5)
 
 	solve_button = HoverButton(root,text="Solve", padx=15, pady=3,borderwidth=3,command=solver)
 	solve_button.configure(activebackground="#d4d4ff")
