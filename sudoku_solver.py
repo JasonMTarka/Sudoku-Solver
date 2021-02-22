@@ -12,7 +12,6 @@ class Inner_Grid(tk.Frame):
 		self.cell_generation()
 
 	def cell_generation(self):
-
 		self.cells = {}
 		for name in NAMES:
 			self.cells[name] = tk.Entry(self, width=4, borderwidth=2,font=8)
@@ -69,10 +68,10 @@ def setup():
 	new_sudoku_button.configure(activebackground="#d4d4ff")
 	new_sudoku_button.grid(row=3,column=1)
 
-	generate(grid)
+	generate()
 
 # Sets the GUI grid to match the values of the grid variable
-def generate(grid):
+def generate():
 	for inner_grid in outer_grids:
 		for name in NAMES:
 			for inner_name in NAMES:
@@ -84,11 +83,10 @@ def generate(grid):
 def make_new_sudoku(difficulty):
 	global grid 
 	grid = SUDOKUS[difficulty.get()]
-	return generate(grid)
+	return generate()
 
-# Primary checker function which checks if a guess value is alreadylocated in the row, column, and inner grid 
+# Primary checker function which checks if a guess value is already located in the row, column, and inner grid 
 def checker(guess,row,col):
-
 	def row_check():
 		if guess in grid[row-1]:
 			return False
@@ -104,9 +102,7 @@ def checker(guess,row,col):
 		return True
 
 	def grid_checker():
-
 		def inner_check(grid_num):
-			
 			"""
 			9-square grids are defined by the following dictionary, with grids 1-3 being the top, 
 			grids 4-6 being the middle, and grids 7-9 being the bottom of the entire puzzle
@@ -122,13 +118,11 @@ def checker(guess,row,col):
 			8: (6,9,3,6),
 			9: (6,9,6,9)
 			}
-
-			section_bot_and_top = gridfinder[grid_num]
-
 			"""
 			Sections refer to 3-row groups (grids 1-3, grids 4,6, 
 			and grids 7-9 make up the three sections
-			""" 
+			"""
+			section_bot_and_top = gridfinder[grid_num]
 			section_bot, section_top, bot, top = section_bot_and_top
 			for i in range(section_bot, section_top):
 					if guess in grid[i][bot:top]:
@@ -163,7 +157,6 @@ def checker(guess,row,col):
 			if col <= 3:
 				if inner_check(7):
 					return True
-
 			elif col >= 4 and col < 7:
 				if inner_check(8):
 					return True
@@ -192,8 +185,7 @@ def solver():
 			else:
 				pass
 
-	generate(grid)
-	print()
+	generate()
 
 if __name__ == "__main__":
 	main()
