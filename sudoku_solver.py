@@ -1,7 +1,10 @@
 import tkinter as tk
 import copy
 
-from sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER
+try:
+    from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER
+except ModuleNotFoundError:
+    from sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER
 
 
 class MainApplication:
@@ -11,8 +14,8 @@ class MainApplication:
         self.root = root
         self.setup()
 
-    # Sets the GUI grid to match the values of the grid variable
     def generate(self):
+        # Sets the GUI grid to match the values of the grid variable
         for inner_grid in self.outer_grids:
             for name in NAMES:
                 for inner_name in NAMES:
@@ -72,7 +75,7 @@ class Sudoku:
     def reset(self):
         self.grid = SUDOKUS[self.difficulty]
 
-    def generate(self):
+    def print_sudoku(self):
         for row in self.grid:
             print(row)
 
@@ -193,7 +196,7 @@ class HoverButton(tk.Button):
 def main():
     sudoku = Sudoku()
     root = tk.Tk()
-    app = MainApplication(sudoku, root)
+    MainApplication(sudoku, root)
     root.title("Sudoku Solver")
     root.geometry("409x290")
     tk.mainloop()
