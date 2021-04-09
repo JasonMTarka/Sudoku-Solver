@@ -81,7 +81,7 @@ class Sudoku:
 
     def solve(self):
         self._recursive_solver()
-        self.grid = saved_grid
+        self.grid = self._saved_grid
 
     def _recursive_solver(self):
         for x in range(1, 10):
@@ -95,11 +95,9 @@ class Sudoku:
                     return
                 else:
                     pass
-        global saved_grid
-        saved_grid = copy.deepcopy(self.grid)
+        self._saved_grid = copy.deepcopy(self.grid)
 
     def _valid_spot(self, guess, row, col):
-
         def _row_check():
             if guess in self.grid[row - 1]:
                 return False
@@ -128,30 +126,24 @@ class Sudoku:
             if row <= 3:
                 if col <= 3:
                     return _inner_check(1)
-
                 elif col >= 4 and col < 7:
                     return _inner_check(2)
-
                 else:
                     return _inner_check(3)
 
             elif row >= 4 and row < 7:
                 if col <= 3:
                     return _inner_check(4)
-
                 elif col >= 4 and col < 7:
                     return _inner_check(5)
-
                 else:
                     return _inner_check(6)
 
             else:
                 if col <= 3:
                     return _inner_check(7)
-
                 elif col >= 4 and col < 7:
                     return _inner_check(8)
-
                 else:
                     return _inner_check(9)
 
@@ -163,8 +155,9 @@ class Sudoku:
             pass
 
 # Inner grid refers to a 9-cell grid
-class Inner_Grid(tk.Frame):
 
+
+class Inner_Grid(tk.Frame):
     def __init__(self, root, **kwargs):
         super().__init__()
         self.cell_generation()
@@ -178,8 +171,9 @@ class Inner_Grid(tk.Frame):
                 self.cells[name].grid(row=row_val, column=col_val)
 
 # Allows button to change color when hovered over
-class HoverButton(tk.Button):
 
+
+class HoverButton(tk.Button):
     def __init__(self, root, **kwargs):
         tk.Button.__init__(self, master=root, **kwargs)
         self.defaultBackground = self["background"]
