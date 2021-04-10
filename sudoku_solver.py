@@ -154,10 +154,9 @@ class Sudoku:
         else:
             pass
 
-# Inner grid refers to a 9-cell grid
-
 
 class Inner_Grid(tk.Frame):
+    # Inner grid refers to a 9-cell grid
     def __init__(self, root, **kwargs):
         super().__init__()
         self.cell_generation()
@@ -170,10 +169,9 @@ class Inner_Grid(tk.Frame):
                 row_val, col_val = LOCATIONS[name][inner_name]
                 self.cells[name].grid(row=row_val, column=col_val)
 
-# Allows button to change color when hovered over
-
 
 class HoverButton(tk.Button):
+    # Allows button to change color when hovered over
     def __init__(self, root, **kwargs):
         tk.Button.__init__(self, master=root, **kwargs)
         self.defaultBackground = self["background"]
