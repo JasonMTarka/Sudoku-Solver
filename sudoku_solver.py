@@ -1,89 +1,42 @@
 import tkinter as tk
 import copy
+from typing import Union
 
+
+# Try block is for website use; except block is for execution as main file
 try:
-    from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER
+    from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER  # type: ignore
 except ModuleNotFoundError:
     from sudoku_constants import NAMES, LOCATIONS, SUDOKUS, GRIDFINDER
 
 
-class MainApplication:
-    def __init__(self, sudoku, root):
-        self.outer_grids = {}
-        self.sudoku = sudoku
-        self.root = root
-        self.setup()
-
-    def generate(self):
-        # Sets the GUI grid to match the values of the grid variable
-        for inner_grid in self.outer_grids:
-            for name in NAMES:
-                for inner_name in NAMES:
-                    loc1, loc2 = LOCATIONS[name][inner_name]
-                    self.outer_grids[name].cells[inner_name].delete(0, tk.END)
-                    self.outer_grids[name].cells[inner_name].insert(0, self.sudoku.grid[loc1][loc2])
-
-    def setup(self):
-        grid_locs = list(LOCATIONS["topleft"].values())
-
-        for i, name in enumerate(NAMES):
-            self.outer_grids[name] = Inner_Grid(self.root)
-            row_val, col_val = grid_locs[i]
-            self.outer_grids[name].grid(row=row_val, column=col_val, padx=5, pady=5)
-
-        solve_button = HoverButton(self.root, text="Solve", padx=15, pady=3, borderwidth=3, command=self._solve_sudoku_button)
-        solve_button.configure(activebackground="#d4d4ff")
-        solve_button.grid(row=3, column=2)
-
-        DIFFICULTY_OPTIONS = ["Easy #1", "Easy #2", "Easy #3", "Medium #1", "Medium #2", "Hard #1", "Super Hard #1"]
-        difficulty_clicked = tk.StringVar()
-        difficulty_clicked.set(DIFFICULTY_OPTIONS[0])
-        difficulty_bar = tk.OptionMenu(self.root, difficulty_clicked, *DIFFICULTY_OPTIONS)
-        difficulty_bar.configure(activebackground="#d4d4ff")
-        difficulty_bar.grid(row=3, column=0)
-
-        new_sudoku_button = HoverButton(self.root, text="Generate Sudoku", padx=15, pady=3, borderwidth=3, command=lambda: self._prep_new_sudoku_button(difficulty_clicked))
-        new_sudoku_button.configure(activebackground="#d4d4ff")
-        new_sudoku_button.grid(row=3, column=1)
-
-        self.generate()
-
-    def _prep_new_sudoku_button(self, difficulty):
-        self.sudoku.load_new(difficulty.get())
-        self.generate()
-
-    def _solve_sudoku_button(self):
-        self.sudoku.solve()
-        self.generate()
-
-
 class Sudoku:
-    def __init__(self, difficulty="Easy #1"):
+    def __init__(self, difficulty: str = "Easy #1") -> None:
         self.grid = SUDOKUS.get(difficulty)
         self.difficulty = difficulty
         self._rows = {}
         for i in range(0, 9):
             self._rows[i] = self.grid[i]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.grid}"
 
-    def load_new(self, difficulty):
+    def load_new(self, difficulty: str) -> None:
         self.grid = SUDOKUS[difficulty]
         self.difficulty = difficulty
 
-    def reset(self):
+    def reset(self) -> None:
         self.grid = SUDOKUS[self.difficulty]
 
-    def print_sudoku(self):
+    def print_sudoku(self) -> None:
         for row in self.grid:
             print(row)
 
-    def solve(self):
+    def solve(self) -> None:
         self._recursive_solver()
         self.grid = self._saved_grid
 
-    def _recursive_solver(self):
+    def _recursive_solver(self) -> None:
         for x in range(1, 10):
             for y in range(1, 10):
                 if self.grid[x - 1][y - 1] == 0:
@@ -97,14 +50,14 @@ class Sudoku:
                     pass
         self._saved_grid = copy.deepcopy(self.grid)
 
-    def _valid_spot(self, guess, row, col):
-        def _row_check():
+    def _valid_spot(self, guess: int, row: int, col: int) -> bool:
+        def _row_check() -> bool:
             if guess in self.grid[row - 1]:
                 return False
             else:
                 return True
 
-        def _col_check():
+        def _col_check() -> bool:
             for j in range(0, 9):
                 if guess == self.grid[j][col - 1]:
                     return False
@@ -112,8 +65,8 @@ class Sudoku:
                     pass
             return True
 
-        def _grid_check():
-            def _inner_check(grid_num):
+        def _grid_check() -> bool:
+            def _inner_check(grid_num: int) -> bool:
                 section_bot_and_top = GRIDFINDER[grid_num]
                 section_bot, section_top, bot, top = section_bot_and_top
                 for i in range(section_bot, section_top):
@@ -151,20 +104,69 @@ class Sudoku:
             if _col_check():
                 if _grid_check():
                     return True
-        else:
-            pass
+        return False
+
+
+class MainApplication:
+    def __init__(self, sudoku: Sudoku, root) -> None:
+        self.outer_grids: dict[str, Inner_Grid] = {}
+        self.sudoku = sudoku
+        self.root = root
+        self.setup()
+
+    def generate(self) -> None:
+        # Sets the GUI grid to match the values of the grid variable
+        for inner_grid in self.outer_grids:
+            for name in NAMES:
+                for inner_name in NAMES:
+                    loc1, loc2 = LOCATIONS[name][inner_name]
+                    self.outer_grids[name].cells[inner_name].delete(0, tk.END)
+                    self.outer_grids[name].cells[inner_name].insert(0, self.sudoku.grid[loc1][loc2])
+
+    def setup(self) -> None:
+        grid_locs = list(LOCATIONS["topleft"].values())
+
+        for i, name in enumerate(NAMES):
+            self.outer_grids[name] = Inner_Grid(self.root)
+            row_val, col_val = grid_locs[i]
+            self.outer_grids[name].grid(row=row_val, column=col_val, padx=5, pady=5)
+
+        solve_button = HoverButton(self.root, text="Solve", padx=15, pady=3, borderwidth=3, command=self._solve_sudoku_button)
+        solve_button.configure(activebackground="#d4d4ff")
+        solve_button.grid(row=3, column=2)
+
+        DIFFICULTY_OPTIONS = ["Easy #1", "Easy #2", "Easy #3", "Medium #1", "Medium #2", "Hard #1", "Super Hard #1"]
+        difficulty_clicked = tk.StringVar()
+        difficulty_clicked.set(DIFFICULTY_OPTIONS[0])
+        difficulty_bar = tk.OptionMenu(self.root, difficulty_clicked, *DIFFICULTY_OPTIONS)
+        difficulty_bar.configure(activebackground="#d4d4ff")
+        difficulty_bar.grid(row=3, column=0)
+
+        new_sudoku_button = HoverButton(self.root, text="Generate Sudoku", padx=15, pady=3, borderwidth=3, command=lambda: self._prep_new_sudoku_button(difficulty_clicked))
+        new_sudoku_button.configure(activebackground="#d4d4ff")
+        new_sudoku_button.grid(row=3, column=1)
+
+        self.generate()
+
+    def _prep_new_sudoku_button(self, difficulty: Union[tk.StringVar]) -> None:
+        self.sudoku.load_new(difficulty.get())
+        self.generate()
+
+    def _solve_sudoku_button(self) -> None:
+        self.sudoku.solve()
+        self.generate()
 
 
 class Inner_Grid(tk.Frame):
     # Inner grid refers to a 9-cell grid
-    def __init__(self, root, **kwargs):
+    def __init__(self, root, **kwargs) -> None:
         super().__init__()
         self.cell_generation()
 
-    def cell_generation(self):
+    def cell_generation(self) -> None:
         self.cells = {}
         for name in NAMES:
-            self.cells[name] = tk.Entry(self, width=4, borderwidth=2, font=8)
+            self.cells[name] = tk.Entry(self, width=4, borderwidth=2, font='8')
             for inner_name in NAMES:
                 row_val, col_val = LOCATIONS[name][inner_name]
                 self.cells[name].grid(row=row_val, column=col_val)
@@ -172,20 +174,20 @@ class Inner_Grid(tk.Frame):
 
 class HoverButton(tk.Button):
     # Allows button to change color when hovered over
-    def __init__(self, root, **kwargs):
+    def __init__(self, root, **kwargs) -> None:
         tk.Button.__init__(self, master=root, **kwargs)
         self.defaultBackground = self["background"]
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
-    def on_enter(self, z):
+    def on_enter(self, z) -> None:
         self["background"] = self["activebackground"]
 
-    def on_leave(self, z):
+    def on_leave(self, z) -> None:
         self["background"] = self.defaultBackground
 
 
-def main():
+def main() -> None:
     sudoku = Sudoku()
     root = tk.Tk()
     MainApplication(sudoku, root)
