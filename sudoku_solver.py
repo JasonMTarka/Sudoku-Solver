@@ -1,4 +1,3 @@
-import tkinter as tk
 import copy
 from typing import Union
 
@@ -106,7 +105,7 @@ class Sudoku:
                     return True
         return False
 
-
+"""
 class MainApplication:
     def __init__(self, sudoku: Sudoku, root) -> None:
         self.outer_grids: dict[str, Inner_Grid] = {}
@@ -188,6 +187,7 @@ class HoverButton(tk.Button):
 
 
 def main() -> None:
+
     sudoku = Sudoku()
     root = tk.Tk()
     MainApplication(sudoku, root)
@@ -198,3 +198,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+"""
