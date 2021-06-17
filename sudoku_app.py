@@ -6,14 +6,19 @@ from sudoku_constants import NAMES, LOCATIONS
 
 
 class MainApplication:
+    """Class which creates tkinter GUI for Sudoku Solver program."""
+
     def __init__(self, sudoku: Sudoku, root) -> None:
+        """Define grid, generate initial sudoku, and create UI."""
+
         self.outer_grids: dict[str, Inner_Grid] = {}
         self.sudoku = sudoku
         self.root = root
         self.setup()
 
     def generate(self) -> None:
-        # Sets the GUI grid to match the values of the grid variable
+        """Set the GUI grid to match the values of the grid variable."""
+
         for inner_grid in self.outer_grids:
             for name in NAMES:
                 for inner_name in NAMES:
@@ -22,6 +27,8 @@ class MainApplication:
                     self.outer_grids[name].cells[inner_name].insert(0, self.sudoku.grid[loc1][loc2])
 
     def setup(self) -> None:
+        """Create GUI grid."""
+
         grid_locs = list(LOCATIONS["topleft"].values())
 
         for i, name in enumerate(NAMES):
@@ -47,21 +54,30 @@ class MainApplication:
         self.generate()
 
     def _prep_new_sudoku_button(self, difficulty: Union[tk.StringVar]) -> None:
+        """Load new sudoku after being called by button."""
+
         self.sudoku.load_new(difficulty.get())
         self.generate()
 
     def _solve_sudoku_button(self) -> None:
+        """Solve sudoku after being called by button."""
+
         self.sudoku.solve()
         self.generate()
 
 
 class Inner_Grid(tk.Frame):
-    # Inner grid refers to a 9-cell grid
+    """Define a 9-value grid (1/9 of complete sudoku)."""
+
     def __init__(self, root, **kwargs) -> None:
+        """Initialize parent tkinter Frame and call cell_generation method."""
+
         super().__init__()
         self.cell_generation()
 
     def cell_generation(self) -> None:
+        """Create a dictionary (self.cells) and insert sudoku values."""
+
         self.cells = {}
         for name in NAMES:
             self.cells[name] = tk.Entry(self, width=4, borderwidth=2, font='8')
@@ -71,21 +87,29 @@ class Inner_Grid(tk.Frame):
 
 
 class HoverButton(tk.Button):
-    # Allows button to change color when hovered over
+    """Allow button to change color when hovered over."""
+
     def __init__(self, root, **kwargs) -> None:
+        """Initialize tkinter button and bind Enter and Leave actions."""
+
         tk.Button.__init__(self, master=root, **kwargs)
         self.defaultBackground = self["background"]
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
     def on_enter(self, z) -> None:
+        """Define entrance action."""
+
         self["background"] = self["activebackground"]
 
     def on_leave(self, z) -> None:
+        """Define exit action."""
+
         self["background"] = self.defaultBackground
 
 
 def main() -> None:
+    """Instantiate Sudoku, root, and MainApplication objects and launch tkinter GUI."""
 
     sudoku = Sudoku()
     root = tk.Tk()

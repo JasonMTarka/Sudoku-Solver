@@ -8,7 +8,11 @@ except ModuleNotFoundError:
 
 
 class Sudoku:
+    """Generate a preset sudoku puzzle and solve using recursive method."""
+
     def __init__(self, difficulty: str = "Easy #1") -> None:
+        """Get grid values from SUDOKUS constant."""
+
         self.grid = SUDOKUS.get(difficulty)
         self.difficulty = difficulty
         self._rows = {}
@@ -16,24 +20,36 @@ class Sudoku:
             self._rows[i] = self.grid[i]
 
     def __repr__(self) -> str:
+        """Return grid information."""
+
         return f"{self.grid}"
 
     def load_new(self, difficulty: str) -> None:
+        """Load a new preset sudoku."""
+
         self.grid = SUDOKUS[difficulty]
         self.difficulty = difficulty
 
     def reset(self) -> None:
+        """Reset a solved sudoku to its unsolved state."""
+
         self.grid = SUDOKUS[self.difficulty]
 
     def print_sudoku(self) -> None:
+        """Print a readable sudoku grid."""
+
         for row in self.grid:
             print(row)
 
     def solve(self) -> None:
+        """Solve sudoku puzzle recursively and save results."""
+
         self._recursive_solver()
         self.grid = self._saved_grid
 
     def _recursive_solver(self) -> None:
+        """Solve recursively using backtracking."""
+
         for x in range(1, 10):
             for y in range(1, 10):
                 if self.grid[x - 1][y - 1] == 0:
@@ -48,13 +64,19 @@ class Sudoku:
         self._saved_grid = copy.deepcopy(self.grid)
 
     def _valid_spot(self, guess: int, row: int, col: int) -> bool:
+        """Check if a value at a spot on the grid is valid or not."""
+
         def _row_check() -> bool:
+            """Check if value already exists in the row."""
+
             if guess in self.grid[row - 1]:
                 return False
             else:
                 return True
 
         def _col_check() -> bool:
+            """Check if value exists in the column."""
+
             for j in range(0, 9):
                 if guess == self.grid[j][col - 1]:
                     return False
@@ -63,7 +85,11 @@ class Sudoku:
             return True
 
         def _grid_check() -> bool:
+            """Check if value exists in the 9-value grid."""
+
             def _inner_check(grid_num: int) -> bool:
+                """Checks inner grid for value depending on which outer grid the spot is in."""
+
                 section_bot_and_top = GRIDFINDER[grid_num]
                 section_bot, section_top, bot, top = section_bot_and_top
                 for i in range(section_bot, section_top):
