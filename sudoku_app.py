@@ -23,8 +23,12 @@ class MainApplication:
             for name in NAMES:
                 for inner_name in NAMES:
                     loc1, loc2 = LOCATIONS[name][inner_name]
-                    self.outer_grids[name].cells[inner_name].delete(0, tk.END)
-                    self.outer_grids[name].cells[inner_name].insert(0, self.sudoku.grid[loc1][loc2])
+                    self.outer_grids[name].cells[inner_name].delete(
+                        0,
+                        tk.END)
+                    self.outer_grids[name].cells[inner_name].insert(
+                        0,
+                        self.sudoku.grid[loc1][loc2])
 
     def setup(self) -> None:
         """Create GUI grid."""
@@ -34,20 +38,43 @@ class MainApplication:
         for i, name in enumerate(NAMES):
             self.outer_grids[name] = Inner_Grid(self.root)
             row_val, col_val = grid_locs[i]
-            self.outer_grids[name].grid(row=row_val, column=col_val, padx=5, pady=5)
+            self.outer_grids[name].grid(row=row_val,
+                                        column=col_val,
+                                        padx=5, pady=5)
 
-        solve_button = HoverButton(self.root, text="Solve", padx=15, pady=3, borderwidth=3, command=self._solve_sudoku_button)
+        solve_button = HoverButton(self.root,
+                                   text="Solve",
+                                   padx=15,
+                                   pady=3,
+                                   borderwidth=3,
+                                   command=self._solve_sudoku_button)
         solve_button.configure(activebackground="#d4d4ff")
         solve_button.grid(row=3, column=2)
 
-        DIFFICULTY_OPTIONS = ["Easy #1", "Easy #2", "Easy #3", "Medium #1", "Medium #2", "Hard #1", "Super Hard #1"]
+        DIFFICULTY_OPTIONS = [
+            "Easy #1",
+            "Easy #2",
+            "Easy #3",
+            "Medium #1",
+            "Medium #2",
+            "Hard #1",
+            "Super Hard #1"]
         difficulty_clicked = tk.StringVar()
         difficulty_clicked.set(DIFFICULTY_OPTIONS[0])
-        difficulty_bar = tk.OptionMenu(self.root, difficulty_clicked, *DIFFICULTY_OPTIONS)
+        difficulty_bar = tk.OptionMenu(self.root,
+                                       difficulty_clicked,
+                                       *DIFFICULTY_OPTIONS)
         difficulty_bar.configure(activebackground="#d4d4ff")
         difficulty_bar.grid(row=3, column=0)
 
-        new_sudoku_button = HoverButton(self.root, text="Generate Sudoku", padx=15, pady=3, borderwidth=3, command=lambda: self._prep_new_sudoku_button(difficulty_clicked))
+        new_sudoku_button = HoverButton(self.root,
+                                        text="Generate Sudoku",
+                                        padx=15,
+                                        pady=3,
+                                        borderwidth=3,
+                                        command=lambda:
+                                        self._prep_new_sudoku_button(
+                                             difficulty_clicked))
         new_sudoku_button.configure(activebackground="#d4d4ff")
         new_sudoku_button.grid(row=3, column=1)
 
@@ -80,7 +107,10 @@ class Inner_Grid(tk.Frame):
 
         self.cells = {}
         for name in NAMES:
-            self.cells[name] = tk.Entry(self, width=4, borderwidth=2, font='8')
+            self.cells[name] = tk.Entry(self,
+                                        width=4,
+                                        borderwidth=2,
+                                        font='8')
             for inner_name in NAMES:
                 row_val, col_val = LOCATIONS[name][inner_name]
                 self.cells[name].grid(row=row_val, column=col_val)
@@ -109,7 +139,7 @@ class HoverButton(tk.Button):
 
 
 def main() -> None:
-    """Instantiate Sudoku, root, and MainApplication objects and launch tkinter GUI."""
+    """Instantiate objects and launch tkinter GUI."""
 
     sudoku = Sudoku()
     root = tk.Tk()

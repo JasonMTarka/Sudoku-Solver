@@ -2,7 +2,8 @@ import copy
 
 # Try block is for website use; except block is for execution as main file
 try:
-    from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import SUDOKUS, GRIDFINDER
+    from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import (
+        SUDOKUS, GRIDFINDER)
 except ModuleNotFoundError:
     from sudoku_constants import SUDOKUS, GRIDFINDER
 
@@ -88,7 +89,7 @@ class Sudoku:
             """Check if value exists in the 9-value grid."""
 
             def _inner_check(grid_num: int) -> bool:
-                """Checks inner grid for value depending on which outer grid the spot is in."""
+                """Checks inner grid for value depending on outer grid."""
 
                 section_bot_and_top = GRIDFINDER[grid_num]
                 section_bot, section_top, bot, top = section_bot_and_top

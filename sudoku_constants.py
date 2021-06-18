@@ -193,8 +193,9 @@ SUDOKUS = {
 }
 
 """
-9-square grids are defined by the following dictionary, with grids 1-3 being the top,
-grids 4-6 being the middle, and grids 7-9 being the bottom of the entire puzzle
+9-square grids are defined by the following dictionary, 
+with grids 1-3 being the top,grids 4-6 being the middle, 
+and grids 7-9 being the bottom of the entire puzzle
 """
 GRIDFINDER = {
     1: (0, 3, 0, 3),
