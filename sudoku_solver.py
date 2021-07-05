@@ -54,9 +54,9 @@ class Sudoku:
         for x in range(1, 10):
             for y in range(1, 10):
                 if self.grid[x - 1][y - 1] == 0:
-                    for i in range(1, 10):
-                        if self._valid_spot(i, x, y):
-                            self.grid[x - 1][y - 1] = i
+                    for guess in range(1, 10):
+                        if self._valid_spot(guess, x, y):
+                            self.grid[x - 1][y - 1] = guess
                             self._recursive_solver()
                             self.grid[x - 1][y - 1] = 0
                     return
