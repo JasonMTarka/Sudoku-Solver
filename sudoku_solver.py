@@ -3,7 +3,9 @@ import copy
 # Try block is for website use; except block is for execution as main file
 try:
     from portfolio_site.sudoku.Sudoku_Solver.sudoku_constants import (
-        SUDOKUS, GRIDFINDER)
+        SUDOKUS,
+        GRIDFINDER,
+    )
 except ModuleNotFoundError:
     from sudoku_constants import SUDOKUS, GRIDFINDER
 
