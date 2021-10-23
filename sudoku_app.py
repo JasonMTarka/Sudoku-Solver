@@ -18,14 +18,13 @@ class MainApplication:
     def generate(self) -> None:
         """Set the GUI grid to match the values of the grid variable."""
 
-        for inner_grid in self.outer_grids:
-            for name in NAMES:
-                for inner_name in NAMES:
-                    loc1, loc2 = LOCATIONS[name][inner_name]
-                    self.outer_grids[name].cells[inner_name].delete(0, tk.END)
-                    self.outer_grids[name].cells[inner_name].insert(
-                        0, self.sudoku.grid[loc1][loc2]
-                    )
+        for name in NAMES:
+            for inner_name in NAMES:
+                loc1, loc2 = LOCATIONS[name][inner_name]
+                self.outer_grids[name].cells[inner_name].delete(0, tk.END)
+                self.outer_grids[name].cells[inner_name].insert(
+                    0, self.sudoku.grid[loc1][loc2]
+                )
 
     def setup(self) -> None:
         """Create GUI grid."""
